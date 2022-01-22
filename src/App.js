@@ -1,4 +1,4 @@
-import { UserAuthContextProvider } from "./routes/ProtectedRoute";
+import { UserAuthContextProvider } from "./contexts/AuthContext";
 import {Routes, Route} from 'react-router-dom'
 
 import ProtectedRoute from "./routes/ProtectedRoute"
