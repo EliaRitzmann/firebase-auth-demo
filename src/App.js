@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard"
 import Profile from "./pages/Profile"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
+import ResetPassword from "./pages/ResetPassword";
 import { Navbar } from "./components/Navbar";
 
 function App() {
@@ -18,9 +19,11 @@ function App() {
         <Route path="/" element={<Welcome/>}/>
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/reset-password" element={<ResetPassword/>}/>
 
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
+        
       </Routes>
       </BrowserRouter>
       </UserAuthContextProvider>
