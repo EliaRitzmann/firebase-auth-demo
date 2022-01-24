@@ -1,19 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const Navbar = () => {
   const {logOut, user} = useAuth();
-
+  const [active, setActive] = useState(false);
   function isUser(){
     if(user){
       return(<div>
-        <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" type="button" data-dropdown-toggle="dropdown">
+        <button type="button" onClick={handleProfile} class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" type="button" data-dropdown-toggle="dropdown">
         <span class="sr-only">Open user menu</span>
-        <img class="w-8 h-8 rounded-full" src="https://static.vecteezy.com/packs/media/components/global/search-explore-nav/img/vectors/term-bg-1-666de2d941529c25aa511dc18d727160.jpg" alt="user photo"/>
+        <img class="w-8 h-8 rounded-full" src={user ? user.photoURL : "https://powerusers.microsoft.com/t5/image/serverpage/image-id/98171iCC9A58CAF1C9B5B9/image-size/large/is-moderation-mode/true?v=v2&px=999"} alt="user photo"/>
       </button>
       </div>)
     }else{
-      return(<a href='/login'>Login</a>)
+      return(<a href='/login' className='text-xl text-white font-bold mr-2'>Login</a>)
+    }
+  }
+
+  function logoutUser(){
+    try{
+      logOut()
+      setActive(false)
+  }catch(error){
+      console.log(error)
+  }
+  }
+
+  function infos(){
+    if(active && user){
+      return(
+        <div class=" z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+        <div class="py-3 px-4">
+          <span class="block text-sm text-gray-900 dark:text-white">{user?.displayName}</span>
+          <span class="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">{user?.email}</span>
+          <span class="block text-sm text-gray-900 dark:text-white"><button onClick={logoutUser} >log out</button></span>
+        </div>
+      </div>
+      )
+    }
+    return
+  }
+
+  function handleProfile(){
+    if(active){
+      setActive(false)
+    }else{
+      setActive(true)
     }
   }
 
@@ -25,30 +57,9 @@ export const Navbar = () => {
   </a>
   <div class="flex items-center md:order-2">
       {isUser()}
+      {infos()}
       
       
-      
-      <div class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
-        <div class="py-3 px-4">
-          <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-          <span class="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
-        </div>
-        
-        <ul class="py-1" aria-labelledby="dropdown">
-        <li>
-          <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
-        </li>
-        </ul>
-      </div>
       <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
       <span class="sr-only">Open main menu</span>
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
@@ -65,7 +76,7 @@ export const Navbar = () => {
         <a href="/dashboard" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Dashboard</a>
       </li>
       <li>
-        <a href="https://github.com/EliaRitzmann" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Git Hub</a>
+        <a href="https://github.com/EliaRitzmann/firebase-auth-demo" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Git Hub</a>
       </li>
     </ul>
   </div>
